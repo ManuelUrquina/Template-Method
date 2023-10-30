@@ -32,7 +32,7 @@ abstract class DataProcessor {
             processParsedData();
             saveData();
         } catch (IOException e) {
-            System.err.println("Error reading data from file: " + filePath);
+            System.err.println("Error al leer los datos del archivo: " + filePath);
         }
     }
 }
@@ -43,13 +43,13 @@ class CsvDataProcessor extends DataProcessor {
 
     @Override
     protected Iterable<CSVRecord> readData(String filePath) throws IOException {
-        System.out.println("Reading CSV data from file: " + filePath);
+        System.out.println("Leyendo datos CSV desde el archivo: " + filePath);
         return CSVParser.parse(new FileReader(filePath), CSVFormat.DEFAULT).getRecords();
     }
 
     @Override
     protected void parseData(Iterable<?> data) {
-        System.out.println("Parsing CSV data");
+        System.out.println("Analizando datos CSV");
         records = new ArrayList<>();
         for (Object record : data) {
             records.add((CSVRecord) record);
@@ -58,28 +58,27 @@ class CsvDataProcessor extends DataProcessor {
 
     @Override
     protected void processParsedData() {
-        System.out.println("Processing CSV data");
-        // Specific operation for CSV data: Print each record
+        System.out.println("Procesando datos CSV");
+        // Operación específica para datos CSV: Imprimir cada registro
         for (CSVRecord record : records) {
-            System.out.println("CSV Record: " + record.toString());
+            System.out.println("Registro CSV: " + record.toString());
         }
     }
 
     @Override
     protected void saveData() {
-        System.out.println("Saving processed data to CSV file");
-        // Specific operation for CSV data: Save the processed data to a new CSV file
+        System.out.println("Guardando los datos procesados en un archivo CSV");
+        // Operación específica para datos CSV: Guardar los datos procesados en un nuevo archivo CSV
         try (FileWriter writer = new FileWriter("output.csv");
              CSVPrinter csvPrinter = new CSVPrinter(writer, CSVFormat.DEFAULT)) {
             for (CSVRecord record : records) {
                 csvPrinter.printRecord(record);
             }
         } catch (IOException e) {
-            System.err.println("Error saving CSV data: " + e.getMessage());
+            System.err.println("Error al guardar los datos CSV: " + e.getMessage());
         }
     }
 }
-
 
 class XmlDataProcessor extends DataProcessor {
 
@@ -87,39 +86,39 @@ class XmlDataProcessor extends DataProcessor {
 
     @Override
     protected Iterable<Element> readData(String filePath) throws IOException {
-        System.out.println("Reading XML data from file: " + filePath);
+        System.out.println("Leyendo datos XML desde el archivo: " + filePath);
         try {
             SAXBuilder saxBuilder = new SAXBuilder();
             rootElement = saxBuilder.build(filePath).getRootElement();
         } catch (JDOMException e) {
-            System.err.println("Error parsing XML data: " + e.getMessage());
+            System.err.println("Error al analizar los datos XML: " + e.getMessage());
         }
         return null;
     }
 
     @Override
     protected void parseData(Iterable<?> data) {
-        System.out.println("Parsing XML data");
-        // Specific operation for XML data: Print the root element
+        System.out.println("Analizando datos XML");
+        // Operación específica para datos XML: Imprimir el elemento raíz
         XMLOutputter xmlOutput = new XMLOutputter(Format.getPrettyFormat());
-        System.out.println("XML Data:\n" + xmlOutput.outputString(rootElement));
+        System.out.println("Datos XML:\n" + xmlOutput.outputString(rootElement));
     }
 
     @Override
     protected void processParsedData() {
-        System.out.println("Processing XML data");
-        // Specific operation for XML data: Implement your XML data processing logic here
+        System.out.println("Procesando datos XML");
+        // Operación específica para datos XML: Implemente su lógica de procesamiento de datos XML aquí
     }
 
     @Override
     protected void saveData() {
-        System.out.println("Saving processed data to XML file");
-        // Specific operation for XML data: Save the processed XML data to a new XML file
+        System.out.println("Guardando los datos procesados en un archivo XML");
+        // Operación específica para datos XML: Guardar los datos XML procesados en un nuevo archivo XML
         try (FileWriter writer = new FileWriter("output.xml")) {
             XMLOutputter xmlOutput = new XMLOutputter(Format.getPrettyFormat());
             xmlOutput.output(rootElement, writer);
         } catch (IOException e) {
-            System.err.println("Error saving XML data: " + e.getMessage());
+            System.err.println("Error al guardar los datos XML: " + e.getMessage());
         }
     }
 }
@@ -130,10 +129,10 @@ public class TemplateMethod {
         DataProcessor csvProcessor = new CsvDataProcessor();
         DataProcessor xmlProcessor = new XmlDataProcessor();
 
-        System.out.println("Processing CSV data:");
+        System.out.println("Procesando datos CSV:");
         csvProcessor.processData("C:\\Users\\M4nu3h\\Documents\\NetBeansProjects\\Template Method\\CSV\\tblAprendicescon - tblAprendicescon.csv.csv");
 
-        System.out.println("\nProcessing XML data:");
+        System.out.println("\nProcesando datos XML:");
         xmlProcessor.processData("C:\\Users\\M4nu3h\\Documents\\NetBeansProjects\\Template Method\\XML\\code_editor.xml");
     }
 }
